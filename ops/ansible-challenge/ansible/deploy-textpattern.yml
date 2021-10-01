@@ -1,0 +1,15 @@
+- name: Install mysql-server
+  hosts: mysql
+  roles:
+    - mysql
+
+- name: Install webserver
+  hosts: apache
+  roles:
+    - apache
+
+- name: Install textpattern
+  hosts: apache,mysql
+  roles:
+    - textpattern
+

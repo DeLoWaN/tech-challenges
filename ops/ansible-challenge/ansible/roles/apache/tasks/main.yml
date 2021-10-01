@@ -1,0 +1,7 @@
+- name: Installs apache2
+  apt: name={{ pkg }} cache_valid_time=600
+  vars:
+    pkg:
+      - apache2
+      - libapache2-mod-php
+      - php-xml

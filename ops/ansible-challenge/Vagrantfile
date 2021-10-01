@@ -1,0 +1,64 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Fix network interface error
+# https://github.com/hashicorp/vagrant/issues/8878#issuecomment-345112810
+class VagrantPlugins::ProviderVirtualBox::Action::Network
+  def dhcp_server_matches_config?(dhcp_server, config)
+    true
+  end
+end
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  
+  required_plugins = %w( vagrant-vbguest vagrant-disksize )
+  _retry = false
+  
+  required_plugins.each do |plugin|
+    unless Vagrant.has_plugin? plugin
+      system "vagrant plugin install #{plugin}"
+      _retry=true
+    end
+  end
+
+  if (_retry)
+    exec "vagrant " + ARGV.join(' ')
+  end
+
+  config.disksize.size = "8GB"
+  config.vm.box = "generic/debian9"
+
+  config.vm.define "nginx" do |nginx|
+    nginx.vm.network "private_network", ip: "192.168.56.51"
+    nginx.vm.hostname = "nginx"
+    nginx.vm.provider "virtualbox" do |vb|
+        vb.name = "nginx"
+    end
+  end
+
+  config.vm.define "mysql" do |mysql|
+    mysql.vm.network "private_network", ip: "192.168.56.52"
+    mysql.vm.hostname = "mysql"
+    mysql.vm.provider "virtualbox" do |vb|
+      vb.name = "mysql"
+    end
+  end
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  config.vm.provision "file", source: "my-public-key.pub", destination: "~/.ssh/authorized_keys" # Deployed in /home/vagrant
+
+#   config.vm.provision "file", source: user_config['user']['ssh_key']['public_part_path'], destination: "~/.ssh/id_ed25519.pub"
+#   config.vm.provision "file", source: "python.patch", destination: "~/python.patch"
+#   config.vm.provision "file", source: "standalone_vault_password", destination: "~/standalone_vault_password"
+#   config.vm.provision "file", source: "ansible-inventory", destination: "~/ansible-inventory"
+#   config.vm.provision "file", source: "get_ip.sh", destination: "~/get_ip.sh"
+#   config.vm.provision "file", source: "provision.sh", destination: "~/provision.sh"
+#   config.vm.provision "shell", path: "ts.sh", args: "-v " + user_config['projects']['vm_setup']['branch'] + " -a " + user_config['projects']['ansible']['branch'] + " -f " + user_config['user']['firstname'] + " -l " + user_config['user']['lastname'] + " -e " + user_config['user']['email']
+#   config.vm.provision :reload
+end

@@ -1,0 +1,21 @@
+- name: Installs mysql server
+  apt: name="{{ pkg }}" cache_valid_time=600
+  vars:
+    pkg:
+      - mysql-server
+      - python3-dev
+      - python3-pip
+      - python-pip
+
+- name: Install PyMySQL, required for ansible mysql operations
+  pip:
+    name:
+      - PyMySQL==0.10.1
+    executable: pip3
+
+- name: Remove the bind-address config from mysql
+  lineinfile:
+    path: /etc/mysql/mariadb.conf.d/50-server.cnf
+    regexp: '^bind-address.*'
+    state: absent
+  notify: restart mysql

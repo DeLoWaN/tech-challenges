@@ -1,0 +1,20 @@
+- name: Delete textpattern database
+  community.mysql.mysql_db:
+    name: "{{ textpattern_config.db_name }}"
+    state: absent
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Create textpattern database
+  community.mysql.mysql_db:
+    name: "{{ textpattern_config.db_name }}"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Create textpattern database user 
+  community.mysql.mysql_user:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    name: "{{ textpattern_config.db_username }}"
+    host: "192.168.56.51"
+    password: "{{ textpattern_config.db_password }}"
+    priv: "{{ textpattern_config.db_name }}.*:ALL"
+    state: present

@@ -1,0 +1,7 @@
+- name:
+  include_tasks: create-database.yml
+  when: "'database' in group_names"
+
+- name:
+  include_tasks: install-textpattern.yml
+  when: "'webserver' in group_names"
