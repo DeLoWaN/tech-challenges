@@ -1,0 +1,9 @@
+- name: Create wordpress install dir
+  file:
+    state: directory
+    path: "{{ wordpress_installs[0].path }}"
+    owner: vagrant
+    group: vagrant
+
+- import_role:
+    name: oefenweb.wordpress

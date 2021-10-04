@@ -8,8 +8,8 @@
   roles:
     - apache
 
-- name: Install textpattern
+- name: Install wordpress
   hosts: apache,mysql
   roles:
-    - textpattern
+    - wordpress
 

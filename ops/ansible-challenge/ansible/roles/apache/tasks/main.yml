@@ -4,4 +4,9 @@
     pkg:
       - apache2
       - libapache2-mod-php
+      - default-mysql-client
       - php-xml
+      - php-zip
+      - php-mysql
+      - zip
+  notify: restart apache2

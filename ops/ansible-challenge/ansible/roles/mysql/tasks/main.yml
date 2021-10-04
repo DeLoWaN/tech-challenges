@@ -2,7 +2,7 @@
   apt: name="{{ pkg }}" cache_valid_time=600
   vars:
     pkg:
-      - mysql-server
+      - default-mysql-server
       - python3-dev
       - python3-pip
       - python-pip

@@ -1,0 +1,20 @@
+- name: Delete wordpress database
+  community.mysql.mysql_db:
+    name: "{{ wordpress_installs[0].dbname }}"
+    state: absent
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Create wordpress database
+  community.mysql.mysql_db:
+    name: "{{ wordpress_installs[0].dbname }}"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Create wordpress database user 
+  community.mysql.mysql_user:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    name: "{{ wordpress_installs[0].dbuser }}"
+    host: "{{ hostvars['apache'].ansible_host }}"
+    password: "{{ wordpress_installs[0].dbpass }}"
+    priv: "{{ wordpress_installs[0].dbname }}.*:ALL"
+    state: present

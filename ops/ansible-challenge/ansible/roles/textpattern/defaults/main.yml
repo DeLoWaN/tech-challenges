@@ -1,8 +1,0 @@
-textpattern_version: "4.8.7"
-textpattern_install_dir: "/var/www/html/textpattern"
-textpattern_config:
-  db_name: "tp"
-  db_username: "tp"
-  # Storing password in clear text is not a good idea, we need ansible-vault
-  db_password: "tp"
-  

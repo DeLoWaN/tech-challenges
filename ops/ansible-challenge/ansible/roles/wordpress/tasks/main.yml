@@ -3,5 +3,5 @@
   when: "'database' in group_names"
 
 - name:
-  include_tasks: install-textpattern.yml
+  include_tasks: install-wordpress.yml
   when: "'webserver' in group_names"

@@ -1,4 +1,3 @@
-ansible_host: 192.168.56.51
 wordpress_installs:
   - name: wordpress
     dbname: wordpressdb
@@ -6,13 +5,16 @@ wordpress_installs:
     dbpass: wordpresspassword
     dbhost: "{{ hostvars['mysql'].ansible_host }}"
     path: /var/www/html/wordpress
-    url: "http://{{ ansible_host }}/wordpress"
+    url: "http://{{ ansible_host }}"
     title: wordpress
     admin_name: admin
     admin_email: root@localhost.localdomain
     admin_password: 'admin'
-    themes: []
-    plugins: []
+    themes:
+      - name: twentytwelve
+        activate: true
+      - name: twentythirteen
+    plugins:
     users: {}
     options: []
     queries: []
